@@ -8,7 +8,7 @@ import { combineReducers } from "redux";
 const persistConfig = {
   key: "contacts",
   storage,
-  whitelist: ["items"], // зберігаємо тільки контакти
+  whitelist: ["items"],
 };
 
 const rootReducer = combineReducers({
@@ -18,6 +18,10 @@ const rootReducer = combineReducers({
 
 const store = configureStore({
   reducer: rootReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }),
 });
 
 export const persistor = persistStore(store);

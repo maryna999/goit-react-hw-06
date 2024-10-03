@@ -1,44 +1,29 @@
-import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { addContact, selectContacts } from "../../redux/contactsSlice";
-import styles from "./ContactsForm.module.css";
+import React from "react";
+import ContactForm from "./components/ContactForm/ContactForm";
+import ContactList from "./components/ContactList/ContactList";
+import SearchBox from "./components/SearchBox/SearchBox";
+import { useSelector } from "react-redux";
+import { selectContacts } from "./redux/contactsSlice";
+import { selectNameFilter } from "./redux/filtersSlice";
+import s from "./App.module.css";
 
-const ContactsForm = () => {
-  const [name, setName] = useState("");
-  const [number, setNumber] = useState("");
-  const dispatch = useDispatch();
+const App = () => {
   const contacts = useSelector(selectContacts);
+  const filter = useSelector(selectNameFilter);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (contacts.some((contact) => contact.name === name)) {
-      alert(`${name} is already in contacts.`);
-      return;
-    }
-    dispatch(addContact({ id: Date.now(), name, number }));
-    setName("");
-    setNumber("");
-  };
+  const filteredContacts = contacts.filter((contact) =>
+    contact.name.toLowerCase().includes(filter.toLowerCase())
+  );
 
   return (
-    <form onSubmit={handleSubmit} className={styles.form}>
-      <label>Name</label>
-      <input
-        type="text"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        required
-      />
-      <label>Number</label>
-      <input
-        type="tel"
-        value={number}
-        onChange={(e) => setNumber(e.target.value)}
-        required
-      />
-      <button type="submit">Add contact</button>
-    </form>
+    <div className={s.container}>
+      <h1 className={s.title}>Phonebook</h1>
+      <ContactForm />
+      <h2>Contacts</h2>
+      <SearchBox />
+      <ContactList contacts={filteredContacts} />
+    </div>
   );
 };
 
-export default ContactsForm;
+export default App;
