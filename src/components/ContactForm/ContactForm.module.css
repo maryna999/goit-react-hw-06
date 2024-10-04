@@ -2,6 +2,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 100%;
+  max-width: 500px;
 }
 
 .form {
@@ -40,4 +42,11 @@
 .btn:hover {
   background-color: green;
   border-color: white;
+}
+
+.error {
+  color: red;
+  font-size: 0.9em;
+  margin-top: 5px;
+  font-weight: bold;
 }
